@@ -2,7 +2,7 @@ source "https://rubygems.org"
 
 gem "rails", "~> 8.0.2"               # The web framework
 gem "propshaft"                       # Asset pipeline (CSS, JS, images)
-gem "pg", "~> 1.1"                    # PostgreSQL database adapter
+gem "sqlite3"
 gem "puma", ">= 5.0"                  # Web server
 gem "importmap-rails"                 # JavaScript with ESM import maps
 gem "turbo-rails"                     # Hotwire page acceleration (SPA-like)
@@ -19,6 +19,17 @@ gem "rollbar"                         # Error tracking in production
 gem "appdev_support"                  # Learning helpers (nicer error messages, etc.)
 gem "cgi" # Required for Ruby 4.0+ (removed from stdlib)
 gem "tsort" # Required for Ruby 4.0+ (moving out of default gems)
+
+# Authentication
+gem "devise"
+
+# Image uploads
+gem "carrierwave", "~> 3.0"
+gem "mini_magick"
+
+# Utilities
+gem "pagy"
+gem "friendly_id"
 
 group :development, :test do
   gem "debug", platforms: %i[mri windows], require: "debug/prelude" # Ruby debugger

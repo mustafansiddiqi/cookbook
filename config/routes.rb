@@ -1,4 +1,20 @@
 Rails.application.routes.draw do
-  # This is a blank app! Pick your first screen, build out the RCAV, and go from there. E.g.:
-  # get("/your_first_screen", { :controller => "pages", :action => "first" })
+  devise_for :users
+
+  root "recipes#index"
+
+  resources :recipes do
+    resources :ingredients, only: [:create, :update, :destroy]
+    resources :steps,       only: [:create, :update, :destroy]
+    member do
+      post   :save,   to: "saved_recipes#create"
+      delete :unsave, to: "saved_recipes#destroy"
+    end
+  end
+
+  resources :saved_recipes, only: [:index]
+
+  resources :users, only: [:show] do
+    resources :follows, only: [:create, :destroy]
+  end
 end
