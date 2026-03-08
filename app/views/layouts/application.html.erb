@@ -1,39 +1,41 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" data-theme="light">
   <head>
-    <title><%= content_for(:title) || "Cookbook" %></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cookbook</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <%= yield :head %>
-    <link rel="icon" href="/icon.png" type="image/png">
+
+    <!-- Pico CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+
+    <!-- Google Fonts: Instagram-feeling typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <!-- Custom styles -->
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
-
   <body>
-    <nav>
-      <strong><%= link_to "Cookbook", root_path %></strong>
-      <% if user_signed_in? %>
-        <%= link_to "My Recipes", saved_recipes_path %>
-        <%= link_to "New Recipe", new_recipe_path %>
-        <%= link_to current_user.username, user_path(current_user) %>
-        <%= link_to "Sign out", destroy_user_session_path, data: { turbo_method: :delete } %>
-      <% else %>
-        <%= link_to "Sign in", new_user_session_path %>
-        <%= link_to "Sign up", new_user_registration_path %>
+    <%= render "layouts/navbar" %>
+
+    <main class="container">
+      <% if notice %>
+        <div class="flash flash-notice"><%= notice %></div>
       <% end %>
-    </nav>
+      <% if alert %>
+        <div class="flash flash-alert"><%= alert %></div>
+      <% end %>
 
-    <% if notice.present? %>
-      <p style="color: green"><%= notice %></p>
-    <% end %>
-    <% if alert.present? %>
-      <p style="color: red"><%= alert %></p>
-    <% end %>
+      <%= yield %>
+    </main>
 
-    <%= yield %>
+    <footer class="site-footer">
+      <div class="container">
+        <small>© <%= Time.now.year %> Cookbook &middot; Made with ❤️</small>
+      </div>
+    </footer>
   </body>
 </html>
