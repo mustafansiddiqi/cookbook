@@ -1,5 +1,5 @@
 class CoverImageUploader < CarrierWave::Uploader::Base
-  include CarrierWave::MiniMagick
+  include CarrierWave::Vips
 
   storage :file
 
