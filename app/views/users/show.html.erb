@@ -1,0 +1,77 @@
+<% content_for :title, "#{@user.username}'s Cookbook" %>
+
+<div class="profile-header">
+  <div class="profile-avatar-large">
+    <% if @user.avatar.present? %>
+      <%= image_tag @user.avatar.thumb.url, alt: @user.username, style: "width:100%; height:100%; object-fit:cover; border-radius:50%;" %>
+    <% else %>
+      <%= (@user.display_name.presence || @user.username)[0].upcase %>
+    <% end %>
+  </div>
+
+  <div>
+    <h1 class="profile-name"><%= @user.display_name.presence || @user.username %>'s Cookbook</h1>
+    <p style="color:var(--text-secondary); font-size:0.9rem; margin:0 0 0.5rem;">@<%= @user.username %></p>
+    <% if @user.bio.present? %>
+      <p class="profile-bio"><%= @user.bio %></p>
+    <% end %>
+
+    <div class="profile-stats">
+      <div class="profile-stat">
+        <span class="profile-stat-count"><%= @recipes.count %></span>
+        <span class="profile-stat-label">recipes</span>
+      </div>
+      <div class="profile-stat">
+        <span class="profile-stat-count"><%= @user.followers.count %></span>
+        <span class="profile-stat-label">followers</span>
+      </div>
+      <div class="profile-stat">
+        <span class="profile-stat-count"><%= @user.following.count %></span>
+        <span class="profile-stat-label">following</span>
+      </div>
+    </div>
+
+    <% if user_signed_in? && current_user != @user %>
+      <div style="margin-top:1rem;">
+        <% if current_user.following.include?(@user) %>
+          <%= button_to "Unfollow", user_follow_path(@user, current_user.active_follows.find_by(followed: @user)), method: :delete, class: "btn-outline" %>
+        <% else %>
+          <%= button_to "Follow", user_follows_path(@user), method: :post, class: "btn-gradient" %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<% if user_signed_in? && current_user == @user %>
+  <div style="margin-bottom:1rem;">
+    <%= link_to "+ Post Recipe", new_recipe_path, class: "btn-gradient" %>
+  </div>
+<% end %>
+
+<div class="recipe-grid">
+  <% @recipes.each do |recipe| %>
+    <%= link_to recipe_path(recipe), style: "text-decoration:none; color:inherit;" do %>
+      <div class="recipe-card">
+        <% if recipe.cover_image.present? %>
+          <%= image_tag recipe.cover_image.thumb.url, alt: recipe.title, class: "recipe-card-image" %>
+        <% else %>
+          <div class="recipe-card-image">🍽️</div>
+        <% end %>
+        <div class="recipe-card-body">
+          <p class="recipe-card-title"><%= recipe.title %></p>
+          <p class="recipe-card-meta">
+            Serves <%= recipe.base_servings %>
+            <% if recipe.draft? %>
+              &nbsp;<span style="background:#f0f0f0; color:var(--text-secondary); font-size:0.7rem; padding:0.1rem 0.4rem; border-radius:4px; font-weight:600;">DRAFT</span>
+            <% end %>
+          </p>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+
+<% if @recipes.empty? %>
+  <p style="text-align:center; color:var(--text-secondary); margin-top:2rem;">No published recipes yet.</p>
+<% end %>

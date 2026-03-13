@@ -1,0 +1,91 @@
+<% content_for :title, @recipe.title %>
+
+<div class="recipe-show">
+  <% if @recipe.cover_image.present? %>
+    <%= image_tag @recipe.cover_image.url, alt: @recipe.title, class: "recipe-cover" %>
+  <% else %>
+    <div class="recipe-cover" style="display:flex; align-items:center; justify-content:center; font-size:5rem;">🍽️</div>
+  <% end %>
+
+  <div class="recipe-header">
+    <h1 style="margin:0;"><%= @recipe.title %></h1>
+    <% if user_signed_in? %>
+      <% if current_user.saved.include?(@recipe) %>
+        <%= button_to "Saved ✓", unsave_recipe_path(@recipe), method: :delete, class: "btn-outline", style: "font-size:0.85rem; padding:0.4rem 1rem;" %>
+      <% else %>
+        <%= button_to "Save Recipe", save_recipe_path(@recipe), method: :post, class: "btn-gradient", style: "font-size:0.85rem; padding:0.4rem 1rem;" %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="recipe-author">
+    <div class="author-avatar"><%= @recipe.user.username[0].upcase %></div>
+    <div>
+      <div class="author-name"><%= link_to @recipe.user.display_name.presence || @recipe.user.username, user_path(@recipe.user), style: "text-decoration:none; color:inherit;" %></div>
+      <div class="author-date"><%= @recipe.created_at.strftime("%B %d, %Y") %></div>
+    </div>
+  </div>
+
+  <% if @recipe.description.present? %>
+    <p><%= @recipe.description %></p>
+  <% end %>
+
+  <p class="text-muted" style="font-size:0.9rem;">
+    <% if @recipe.prep_time_mins.present? %>Prep: <%= @recipe.prep_time_mins %> min &nbsp;<% end %>
+    <% if @recipe.cook_time_mins.present? %>Cook: <%= @recipe.cook_time_mins %> min<% end %>
+  </p>
+
+  <div class="serving-scaler">
+    <label for="servings">Servings:</label>
+    <form method="get" action="<%= recipe_path(@recipe) %>" style="display:flex; align-items:center; gap:0.75rem; margin:0;">
+      <input type="number" id="servings" name="servings" value="<%= @servings %>" min="1">
+      <button type="submit" class="btn-gradient" style="padding:0.4rem 1rem; font-size:0.85rem;">Update</button>
+    </form>
+  </div>
+
+  <h2>Ingredients <span class="text-muted" style="font-size:1rem; font-family:var(--font-body);">(for <%= @servings %>)</span></h2>
+  <ul class="ingredients-list">
+    <% @recipe.ingredients.each do |ingredient| %>
+      <li>
+        <span class="ingredient-amount"><%= ingredient.scaled_amount(@ratio) %></span>
+        <span class="ingredient-unit"><%= ingredient.unit %></span>
+        <span><%= ingredient.name %></span>
+      </li>
+    <% end %>
+  </ul>
+
+  <h2>Instructions</h2>
+  <ol class="steps-list">
+    <% @recipe.steps.each do |step| %>
+      <li class="step-item">
+        <div class="step-number"><%= step.position %></div>
+        <div class="step-text">
+          <%= step.instruction %>
+          <% if step.image.present? %>
+            <%= image_tag step.image.url, alt: "Step #{step.position}", style: "margin-top:0.75rem; border-radius:var(--radius-sm); max-width:100%;" %>
+          <% end %>
+        </div>
+      </li>
+    <% end %>
+  </ol>
+
+  <% if @recipe.recipe_images.any? %>
+    <h2>Photos</h2>
+    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:4px; margin-bottom:1.5rem;">
+      <% @recipe.recipe_images.each do |ri| %>
+        <%= image_tag ri.image.url, alt: @recipe.title, style: "width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:var(--radius-sm);" %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% if user_signed_in? && @recipe.user == current_user %>
+    <div style="display:flex; gap:0.75rem; margin-top:2rem; padding-top:1.5rem; border-top:1px solid var(--border);">
+      <%= link_to "Edit Recipe", edit_recipe_path(@recipe), class: "btn-outline" %>
+      <%= button_to "Delete", recipe_path(@recipe), method: :delete, data: { turbo_confirm: "Delete this recipe?" }, class: "btn-outline", style: "border-color:#dc2743; color:#dc2743;" %>
+    </div>
+  <% end %>
+
+  <div style="margin-top:1.5rem;">
+    <%= link_to "← Back to recipes", recipes_path, style: "color:var(--text-secondary); font-size:0.9rem;" %>
+  </div>
+</div>

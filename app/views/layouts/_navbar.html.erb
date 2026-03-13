@@ -1,0 +1,20 @@
+<nav class="site-nav">
+  <div class="container nav-inner">
+    <a href="/" class="nav-brand">📖 Cookbook</a>
+
+    <div class="nav-links">
+      <% if user_signed_in? %>
+        <a href="/recipes">Feed</a>
+        <a href="/saved_recipes">My Saved Recipes</a>
+        <a href="/users/<%= current_user.id %>"><%= current_user.display_name || current_user.username %>'s Cookbook</a>
+        <a href="/users/edit" class="nav-avatar-link">
+          <span class="nav-avatar"><%= (current_user.display_name || current_user.username)[0].upcase %></span>
+        </a>
+        <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "nav-signout btn-outline", style: "font-size:0.85rem; padding:0.4rem 1rem;", form: { style: "display:inline;" } %>
+      <% else %>
+        <a href="/users/sign_in">Sign in</a>
+        <a href="/users/sign_up" class="btn-primary-nav">Sign up</a>
+      <% end %>
+    </div>
+  </div>
+</nav>

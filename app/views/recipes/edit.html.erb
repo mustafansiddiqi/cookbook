@@ -1,0 +1,4 @@
+<% content_for :title, "Edit #{@recipe.title}" %>
+<h1>Edit Recipe</h1>
+<%= render "form", recipe: @recipe %>
+<%= link_to "View recipe", recipe_path(@recipe) %>
