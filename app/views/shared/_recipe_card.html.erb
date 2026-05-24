@@ -1,19 +1,17 @@
 <%# Locals: recipe (required) %>
-<%= link_to recipe_path(recipe), class: "text-decoration-none text-reset" do %>
-  <div class="card h-100 shadow-sm recipe-card">
+<%= link_to recipe_path(recipe), style: "text-decoration:none; color:inherit;" do %>
+  <div class="recipe-card">
     <% if recipe.cover_image.present? %>
-      <%= image_tag recipe.cover_image.thumb.url, alt: recipe.title,
-            class: "card-img-top recipe-card-img", style: "object-fit:cover; height:200px;" %>
+      <%= image_tag recipe.cover_image.thumb.url, alt: recipe.title, class: "recipe-card-image" %>
     <% else %>
-      <div class="card-img-top d-flex align-items-center justify-content-center bg-light"
-           style="height:200px; font-size:3rem;">🍽️</div>
+      <div class="recipe-card-image">🍽️</div>
     <% end %>
-    <div class="card-body">
-      <h5 class="card-title mb-1"><%= recipe.title %></h5>
-      <p class="card-text text-muted small">
+    <div class="recipe-card-body">
+      <p class="recipe-card-title"><%= recipe.title %></p>
+      <p class="recipe-card-meta">
         by <strong><%= recipe.user.username %></strong> &middot; Serves <%= recipe.base_servings %>
         <% if recipe.draft? %>
-          <span class="badge bg-secondary ms-1">Draft</span>
+          &nbsp;<span style="background:#f0f0f0; color:var(--text-secondary); font-size:0.7rem; padding:0.1rem 0.4rem; border-radius:4px; font-weight:600;">DRAFT</span>
         <% end %>
       </p>
     </div>

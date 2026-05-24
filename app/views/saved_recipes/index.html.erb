@@ -1,26 +1,17 @@
-<% content_for :title, "My Recipes" %>
-<h1>My Saved Recipes</h1>
+<% content_for :title, "Saved Recipes" %>
+<%= native_navbar_tag("Saved") %>
 
-<div class="recipe-grid">
-  <% @recipes.each do |recipe| %>
-    <%= link_to recipe_path(recipe), style: "text-decoration:none; color:inherit;" do %>
-      <div class="recipe-card">
-        <% if recipe.cover_image.present? %>
-          <%= image_tag recipe.cover_image.thumb.url, alt: recipe.title, class: "recipe-card-image" %>
-        <% else %>
-          <div class="recipe-card-image">🍽️</div>
-        <% end %>
-        <div class="recipe-card-body">
-          <p class="recipe-card-title"><%= recipe.title %></p>
-          <p class="recipe-card-meta">by <%= recipe.user.username %></p>
-        </div>
-      </div>
+<h1 style="font-family:var(--font-display); font-size:1.5rem; margin-bottom:1rem;">Saved Recipes</h1>
+
+<% if @recipes.any? %>
+  <div class="recipe-grid">
+    <% @recipes.each do |recipe| %>
+      <%= render "shared/recipe_card", recipe: recipe %>
     <% end %>
-  <% end %>
-</div>
-
-<% if @recipes.empty? %>
-  <p style="text-align:center; color:var(--text-secondary); margin-top:3rem;">
-    No saved recipes yet. <%= link_to "Browse recipes", recipes_path, style: "color:var(--brand-pink); font-weight:600;" %>
-  </p>
+  </div>
+<% else %>
+  <div style="text-align:center; padding:4rem 0; color:var(--text-secondary);">
+    <p style="font-size:1.1rem;">No saved recipes yet.</p>
+    <%= link_to "Browse recipes", recipes_path, class: "btn-gradient" %>
+  </div>
 <% end %>
