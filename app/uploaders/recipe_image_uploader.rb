@@ -1,5 +1,5 @@
 class RecipeImageUploader < CarrierWave::Uploader::Base
-  include CarrierWave::Vips
+  include CarrierWave::MiniMagick
 
   storage :file
 

@@ -1,8 +1,23 @@
 <div class="form-card" style="margin-top: 2rem;">
   <h1 style="margin-bottom: 1.5rem;">Edit Profile</h1>
 
-  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, multipart: true }) do |f| %>
     <%= render "devise/shared/error_messages", resource: resource %>
+
+    <div style="display:flex; align-items:center; gap:1rem; margin-bottom:1.5rem;">
+      <div class="profile-avatar-large" style="width:64px;height:64px;font-size:1.4rem;flex-shrink:0;">
+        <% if resource.avatar.present? %>
+          <%= image_tag resource.avatar.thumb.url, alt: resource.username, style: "width:100%;height:100%;object-fit:cover;border-radius:50%;" %>
+        <% else %>
+          <%= (resource.display_name.presence || resource.username || "?")[0].upcase %>
+        <% end %>
+      </div>
+      <div style="flex:1;">
+        <label>Profile Photo</label>
+        <%= f.file_field :avatar, accept: "image/*" %>
+        <%= f.hidden_field :avatar_cache %>
+      </div>
+    </div>
 
     <label>Username</label>
     <%= f.text_field :username %>

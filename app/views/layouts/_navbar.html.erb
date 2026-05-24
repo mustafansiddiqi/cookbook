@@ -1,19 +1,30 @@
 <nav class="site-nav">
-  <div class="container nav-inner">
-    <a href="/" class="nav-brand">📖 Cookbook</a>
+  <div class="nav-inner">
+    <%= link_to "Cookbook", root_path, class: "nav-brand" %>
 
     <div class="nav-links">
       <% if user_signed_in? %>
-        <a href="/recipes">Feed</a>
-        <a href="/saved_recipes">My Saved Recipes</a>
-        <a href="/users/<%= current_user.id %>"><%= current_user.display_name || current_user.username %>'s Cookbook</a>
-        <a href="/users/edit" class="nav-avatar-link">
-          <span class="nav-avatar"><%= (current_user.display_name || current_user.username)[0].upcase %></span>
-        </a>
-        <%= button_to "Sign out", destroy_user_session_path, method: :delete, class: "nav-signout btn-outline", style: "font-size:0.85rem; padding:0.4rem 1rem;", form: { style: "display:inline;" } %>
+        <%= link_to "Feed", recipes_path %>
+        <%= link_to "Saved", saved_recipes_path %>
+        <% if current_user.avatar.present? %>
+          <%= link_to user_path(current_user) do %>
+            <%= image_tag current_user.avatar.thumb.url,
+                  alt: current_user.username,
+                  style: "width:32px;height:32px;border-radius:50%;object-fit:cover;vertical-align:middle;" %>
+          <% end %>
+        <% else %>
+          <%= link_to user_path(current_user), class: "nav-avatar",
+                title: current_user.display_name.presence || current_user.username do %>
+            <%= (current_user.display_name.presence || current_user.username)[0].upcase %>
+          <% end %>
+        <% end %>
+        <%= link_to "+ Recipe", new_recipe_path, class: "btn-gradient" %>
+        <%= button_to "Sign out", destroy_user_session_path, method: :delete,
+              class: "btn-outline nav-signout",
+              form: { style: "display:inline;" } %>
       <% else %>
-        <a href="/users/sign_in">Sign in</a>
-        <a href="/users/sign_up" class="btn-primary-nav">Sign up</a>
+        <%= link_to "Sign in", new_user_session_path %>
+        <%= link_to "Sign up", new_user_registration_path, class: "btn-gradient" %>
       <% end %>
     </div>
   </div>

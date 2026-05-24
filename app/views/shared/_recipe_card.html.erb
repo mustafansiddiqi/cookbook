@@ -1,0 +1,21 @@
+<%# Locals: recipe (required) %>
+<%= link_to recipe_path(recipe), class: "text-decoration-none text-reset" do %>
+  <div class="card h-100 shadow-sm recipe-card">
+    <% if recipe.cover_image.present? %>
+      <%= image_tag recipe.cover_image.thumb.url, alt: recipe.title,
+            class: "card-img-top recipe-card-img", style: "object-fit:cover; height:200px;" %>
+    <% else %>
+      <div class="card-img-top d-flex align-items-center justify-content-center bg-light"
+           style="height:200px; font-size:3rem;">🍽️</div>
+    <% end %>
+    <div class="card-body">
+      <h5 class="card-title mb-1"><%= recipe.title %></h5>
+      <p class="card-text text-muted small">
+        by <strong><%= recipe.user.username %></strong> &middot; Serves <%= recipe.base_servings %>
+        <% if recipe.draft? %>
+          <span class="badge bg-secondary ms-1">Draft</span>
+        <% end %>
+      </p>
+    </div>
+  </div>
+<% end %>
