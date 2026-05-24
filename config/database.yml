@@ -29,3 +29,4 @@ queue:
   <<: *default
   database: storage/production_queue.sqlite3
   database_tasks: false
+  pool: 10
