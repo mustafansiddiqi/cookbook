@@ -1,0 +1,21 @@
+app:
+  name: "Cookbook"
+  mode: normal
+
+appearance:
+  tint_color: "#0d6efd"
+  background_color: "#FFFFFF"
+
+tabs:
+  - title: "Feed"
+    path: /recipes
+    icon: fork.knife
+  - title: "New Recipe"
+    path: /recipes/new
+    icon: plus.circle
+  - title: "Saved"
+    path: /saved_recipes
+    icon: bookmark
+  - title: "Profile"
+    path: /my_profile
+    icon: person.circle

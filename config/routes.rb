@@ -3,6 +3,8 @@ Rails.application.routes.draw do
 
   root "recipes#index"
 
+  get '/my_profile', to: 'users#my_profile'
+
   resources :recipes do
     resources :ingredients, only: [:create, :update, :destroy]
     resources :steps,       only: [:create, :update, :destroy]
