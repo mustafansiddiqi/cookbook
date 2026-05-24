@@ -1,40 +1,41 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Cookbook</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title><%= content_for?(:title) ? yield(:title) : "Cookbook" %></title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <!-- Pico CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-
-    <!-- Google Fonts: Instagram-feeling typography -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 
-    <!-- Custom styles -->
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag :ruby_native %>
     <%= javascript_importmap_tags %>
   </head>
   <body>
-    <%= render "layouts/navbar" %>
+    <%= render "layouts/navbar" unless native_app? %>
 
-    <main class="container">
-      <% if notice %>
-        <div class="flash flash-notice"><%= notice %></div>
-      <% end %>
-      <% if alert %>
-        <div class="flash flash-alert"><%= alert %></div>
-      <% end %>
+    <div class="flash-container">
+      <%= render "shared/flash" %>
+    </div>
 
+    <main class="container native-inset">
       <%= yield %>
     </main>
 
+    <%= native_tabs_tag %>
+
     <footer class="site-footer">
       <div class="container">
-        <small>© <%= Time.now.year %> Cookbook &middot; Made with the inspiration and love from all the people who have shared recipes with me, but especially my Mama, Seemi Aunty, Huma Aunty, NNL and Mashal.</small>
+        <small>
+          &copy; <%= Time.now.year %> Cookbook &middot;
+          Made with the inspiration and love from all the people who have shared recipes with me, but especially my Mama, Seemi Aunty, Huma Aunty, NNL and Mashal.
+        </small>
       </div>
     </footer>
   </body>
