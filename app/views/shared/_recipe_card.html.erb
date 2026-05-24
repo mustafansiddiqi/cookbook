@@ -1,5 +1,5 @@
 <%# Locals: recipe (required) %>
-<%= link_to recipe_path(recipe), style: "text-decoration:none; color:inherit;" do %>
+<%= link_to recipe_path(recipe), style: "text-decoration:none; color:inherit; display:block;" do %>
   <div class="recipe-card">
     <% if recipe.cover_image.present? %>
       <%= image_tag recipe.cover_image.thumb.url, alt: recipe.title, class: "recipe-card-image" %>
