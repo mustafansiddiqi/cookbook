@@ -4,7 +4,6 @@ gem "rails", "~> 8.0.2"               # The web framework
 gem "propshaft"                       # Asset pipeline (CSS, JS, images)
 gem "sqlite3"
 
-gem "pg", group: :production
 gem "puma", ">= 5.0"                  # Web server
 gem "importmap-rails"                 # JavaScript with ESM import maps
 gem "turbo-rails"                     # Hotwire page acceleration (SPA-like)
@@ -25,6 +24,9 @@ gem "tsort" # Required for Ruby 4.0+ (moving out of default gems)
 # Authentication
 gem "devise"
 
+# Authorization
+gem "action_policy"
+
 # Image uploads
 gem "carrierwave", "~> 3.0"
 gem "mini_magick"
@@ -32,6 +34,9 @@ gem "mini_magick"
 # Utilities
 gem "pagy"
 gem "friendly_id"
+
+# iOS native wrapper (run: bundle install && rails generate ruby_native:install)
+gem "ruby_native"
 
 group :development, :test do
   gem "debug", platforms: %i[mri windows], require: "debug/prelude" # Ruby debugger

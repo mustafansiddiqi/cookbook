@@ -12,24 +12,20 @@ test:
   database: storage/test.sqlite3
 
 production:
-  adapter: postgresql
-  url: <%= ENV["DATABASE_URL"] %>
-  pool: 10
+  <<: *default
+  database: storage/production.sqlite3
 
 cache:
-  adapter: postgresql
-  url: <%= ENV["DATABASE_URL"] %>
-  pool: 10
+  <<: *default
+  database: storage/production_cache.sqlite3
   database_tasks: false
 
 cable:
-  adapter: postgresql
-  url: <%= ENV["DATABASE_URL"] %>
-  pool: 10
+  <<: *default
+  database: storage/production_cable.sqlite3
   database_tasks: false
 
 queue:
-  adapter: postgresql
-  url: <%= ENV["DATABASE_URL"] %>
-  pool: 10
+  <<: *default
+  database: storage/production_queue.sqlite3
   database_tasks: false
